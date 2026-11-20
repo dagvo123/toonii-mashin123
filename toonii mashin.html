@@ -1,0 +1,161 @@
+﻿
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тооны машин</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ffd6e7, #d9c6ff);
+    font-family: Arial, sans-serif;
+}
+
+.calculator {
+    width: 320px;
+    padding: 22px;
+    background: white;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px #a17b9b55;
+}
+
+h2 {
+    text-align: center;
+    color: #e77ba9;
+}
+
+#display {
+    width: 100%;
+    height: 65px;
+    border: none;
+    border-radius: 15px;
+    background: #fff0f6;
+    text-align: right;
+    padding: 15px;
+    font-size: 27px;
+    margin-bottom: 15px;
+    color: #74445b;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    height: 58px;
+    border: none;
+    border-radius: 15px;
+    font-size: 21px;
+    cursor: pointer;
+    background: #ffe4ef;
+    color: #74445b;
+}
+
+button:hover {
+    background: #ffc4dc;
+}
+
+.operator {
+    background: #e9d9ff;
+}
+
+.clear {
+    background: #ffb6c9;
+}
+
+.equal {
+    background: #e8a6ce;
+    color: white;
+}
+
+.zero {
+    grid-column: span 2;
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+    <h2>🎀 Тооны машин 🎀</h2>
+
+    <input type="text" id="display" readonly value="0">
+
+    <div class="buttons">
+        <button class="clear" onclick="clearDisplay()">AC</button>
+        <button onclick="deleteLast()">DEL</button>
+        <button class="operator" onclick="add('/')">÷</button>
+        <button class="operator" onclick="add('*')">×</button>
+
+        <button onclick="add('7')">7</button>
+        <button onclick="add('8')">8</button>
+        <button onclick="add('9')">9</button>
+        <button class="operator" onclick="add('-')">−</button>
+
+        <button onclick="add('4')">4</button>
+        <button onclick="add('5')">5</button>
+        <button onclick="add('6')">6</button>
+        <button class="operator" onclick="add('+')">+</button>
+
+        <button onclick="add('1')">1</button>
+        <button onclick="add('2')">2</button>
+        <button onclick="add('3')">3</button>
+        <button class="equal" onclick="calculate()">=</button>
+
+        <button class="zero" onclick="add('0')">0</button>
+        <button onclick="add('.')">.</button>
+    </div>
+</div>
+
+<script>
+const display = document.getElementById("display");
+
+function add(value) {
+    if (display.value === "0" || display.value === "Алдаа!") {
+        display.value = value;
+    } else {
+        display.value += value;
+    }
+}
+
+function clearDisplay() {
+    display.value = "0";
+}
+
+function deleteLast() {
+    display.value = display.value.slice(0, -1) || "0";
+}
+
+function calculate() {
+    try {
+        let expression = display.value;
+
+        if (!/^[0-9+\-*/.() ]+$/.test(expression)) {
+            throw new Error();
+        }
+
+        let result = Function('"use strict"; return (' + expression + ')')();
+
+        if (!Number.isFinite(result)) throw new Error();
+
+        display.value = Number(result.toFixed(10)).toString();
+    } catch {
+        display.value = "Алдаа!";
+    }
+}
+</script>
+
+</body>
+</html>
